@@ -76,9 +76,9 @@ function frame(now){
   sp+=(SW.p-sp)*Math.min(1,dt*1.6);
   wires.forEach((l,i)=>{const v=Math.max(0,Math.min(1,SW.w*1.4-i/NW*.4));l.geometry.setDrawRange(0,Math.floor(v*NP));l.material.opacity=1-SW.core*.75});
   const beat=Math.pow(Math.max(0,Math.sin(t*5.2)),14)*.12;       // heartbeat
-  core.scale.setScalar(Math.max(.001,SW.core*(1+beat)));
+  core.scale.setScalar(Math.max(.001,SW.core));
   ico.rotation.y=t*.2;rings.forEach((r,i)=>r.rotation.z+=dt*(.4+i*.2));
-  ledOut.rotation.z+=dt*.15;ledIn.rotation.z-=dt*.25;ticks.rotation.z+=dt*.05;ledOut.material.opacity=Math.sin(t*3)>.9?.3:.95;
+  ledOut.rotation.z+=dt*.15;ledIn.rotation.z-=dt*.25;ticks.rotation.z+=dt*.05;ledOut.material.opacity=.9;
   hel.rotation.z=t*.05+sp*2;crosses.forEach(c=>{c.rotation.x+=dt*c.userData.s;c.rotation.y+=dt*c.userData.s*.7;c.position.y=c.userData.y+Math.sin(t*c.userData.s+c.position.z)*.6});
   const z=9+(1-SW.w)*7-sp*DEPTH,x=Math.sin(sp*7)*1.6+mx*1.2,y=Math.cos(sp*5)*.9-my*.8;
   C.position.set(x,y,z);C.lookAt(x*.3,y*.3,z-12);C.rotation.z+=Math.sin(sp*9)*.04;
@@ -89,5 +89,5 @@ requestAnimationFrame(frame);
 /* Intro timeline: wires draw in, then the core blooms */
 let fired=false;const done=()=>{if(!fired){fired=true;document.dispatchEvent(new Event('introdone'))}};
 if(reduce){SW.w=1;SW.core=1;done()}
-else{const tl=gsap.timeline().to(SW,{w:1,duration:2.4,ease:'power1.inOut'}).to(SW,{core:1,duration:1.3,ease:'elastic.out(1,.6)'},'-=.4').call(done);SW.skip=()=>tl.progress(1);setTimeout(done,7000)}
+else{const tl=gsap.timeline().to(SW,{w:1,duration:2.4,ease:'power1.inOut'}).to(SW,{core:1,duration:1.3,ease:'power2.out'},'-=.4').call(done);SW.skip=()=>tl.progress(1);setTimeout(done,7000)}
 })();
